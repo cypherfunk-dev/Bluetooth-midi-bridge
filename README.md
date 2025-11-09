@@ -11,14 +11,14 @@ It allows you to map pedal switches to control tracks, effects, or any MIDI-mapp
 - Install **loopMIDI** from `loopMIDISetup.exe` or [https://www.tobias-erichsen.de/software/loopmidi.html](https://www.tobias-erichsen.de/software/loopmidi.html)
 - Open it and create a new port named **`mvave_midi`** by clicking the **`+`** button.
 
-![alt text](image-1.png)
+![alt text](assets/image-1.png)
 
 
 ### 2. Install Sinco_Connector (for Bluetooth connectivity)
 - Install `Sinco_Connector.exe`
 - Open **Bt Midi connector** and click on **FootCtrl**
 
-![alt text](image.png)
+![alt text](assets/image.png)
 
 ---
 
@@ -40,7 +40,7 @@ It allows you to map pedal switches to control tracks, effects, or any MIDI-mapp
    - **Remote**
 5. Done! Your pedal can now 
 
-![alt text](image-2.png)
+![alt text](assets/image-2.png)
 
 ---
 
@@ -71,7 +71,7 @@ python mvave_midi.py
 ```
 To build an executable 
 ```bash
-pyinstaller --onefile --hidden-import=mido.backends.rtmidi --hidden-import=rtmidi --icon="./icon.ico"  mvave_midi.py
+pyinstaller --onefile --hidden-import=mido.backends.rtmidi --hidden-import=rtmidi --icon="assets/icon.ico"  mvave_midi.py
 ```
 ## TODO
 
