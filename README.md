@@ -8,7 +8,7 @@ It allows you to map pedal switches to control tracks, effects, or any MIDI-mapp
 ## 🚀 Installation & Setup
 
 ### 1. Install **loopMIDI**
-- Install **loopMIDI** from loopMIDISetup.exe or [https://www.tobias-erichsen.de/software/loopmidi.html](https://www.tobias-erichsen.de/software/loopmidi.html)
+- Install **loopMIDI** from `loopMIDISetup.exe` or [https://www.tobias-erichsen.de/software/loopmidi.html](https://www.tobias-erichsen.de/software/loopmidi.html)
 - Open it and create a new port named **`mvave_midi`** by clicking the **`+`** button.
 
 ![alt text](image-1.png)
@@ -54,6 +54,7 @@ It allows you to map pedal switches to control tracks, effects, or any MIDI-mapp
 ## 🧠 Author
 Experimental project developed to bridge Bluetooth MIDI controllers with DAWs using Python and Mido.  
 Inspired by the need to **control Ableton with your feet without spending hundreds on dedicated hardware**.
+Also, CubeSuite (official software) is a little bit unstable.
 
 ---
 
