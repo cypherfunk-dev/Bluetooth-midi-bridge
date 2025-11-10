@@ -1,4 +1,4 @@
-# Mvave MIDI Bridge
+# Mvave Chocolate MIDI Bridge
 
 This small utility converts messages from the **Mvave Chocolate** (or any other Bluetooth/USB MIDI controller) into usable events for your DAW.  
 It allows you to map pedal switches to control tracks, effects, or any MIDI-mappable parameter with greater flexibility.
