@@ -200,18 +200,24 @@ class MidiBridgeApp(ctk.CTk):
 
 
 
-
-
-
-
     def on_learn_request(self, control_id, is_output=False):
-        """Maneja solicitud de aprendizaje - CON DEBUG"""
+        """Maneja solicitud de aprendizaje - VERSIÓN CORREGIDA"""
         self.console_panel.log(f"DEBUG: on_learn_request - control_id: {control_id}, is_output: {is_output}")
         
         if not self.is_connected:
             self.console_panel.log("Error: Primero debes conectar los puertos MIDI")
             return
         
+        # Si ya estamos en modo aprendizaje para ESTE control, cancelarlo
+        if (self.learning_manager.learning_mode and 
+            self.learning_manager.learning_control_id == control_id):
+            self.learning_manager.learning_control_id = None
+            self.console_panel.log(f"Aprendizaje cancelado para {control_id}")
+            self.update_learning_ui()
+            return
+        
+        # Activar modo aprendizaje para este control específico
+        self.learning_manager.learning_mode = True  # ← Asegurar que el modo global esté activo
         if is_output:
             self.learning_manager.start_learning_output(control_id)
             self.console_panel.log(f"DEBUG: learning_control_id establecido a: {control_id} (output)")
@@ -220,6 +226,13 @@ class MidiBridgeApp(ctk.CTk):
             self.console_panel.log(f"DEBUG: learning_control_id establecido a: {control_id} (input)")
         
         self.update_learning_ui()
+
+
+
+
+
+
+
 
     def update_learning_ui(self):
         """Actualiza la UI según el estado de aprendizaje"""
@@ -323,6 +336,9 @@ class MidiBridgeApp(ctk.CTk):
         # Mapeo normal
         self.handle_normal_mapping(control, value)
 
+
+
+
     def handle_learning_message(self, control):
         """Maneja mensajes en modo aprendizaje"""
         control_id = self.learning_manager.learning_control_id
@@ -338,10 +354,17 @@ class MidiBridgeApp(ctk.CTk):
                 self.switches[control_id].input_cc_var.set(str(control))
                 self.console_panel.log(f"CC ENTRADA para {control_id} asignado a CC{control}")
         
+        # RESET COMPLETO del modo aprendizaje
         self.learning_manager.learning_control_id = None
         self.learning_manager.learning_cc_out = False
+        self.learning_manager.learning_mode = False
+
+        # ACTUALIZAR BOTÓN PRINCIPAL también
+        self.learn_btn.configure(text=self.localization.t("learn_controls"), fg_color="orange")
         
-        self.update_learning_ui()
+        # ACTUALIZACIÓN COMPLETA DE LA UI
+        self.controls_panel.refresh_all_switches()
+
 
 
 
@@ -416,30 +439,34 @@ class MidiBridgeApp(ctk.CTk):
 
 
 
-
-
-
-
-
-
     def toggle_learning_mode(self):
-        """Activa/desactiva modo aprendizaje global"""
+        """Activa/desactiva modo aprendizaje global - VERSIÓN CORREGIDA"""
         if not self.learning_manager.learning_mode:
+            # ACTIVAR modo aprendizaje
             self.learning_manager.learning_mode = True
             self.learning_manager.learning_cc_out = False
+            self.learning_manager.learning_control_id = None  # ← Asegurar que empiece sin control específico
             self.learn_btn.configure(text=self.localization.t("cancel_learn"), fg_color="red")
             self.console_panel.log(self.localization.t("learn_mode_active"))
             self.console_panel.log(self.localization.t("learn_instructions"))
             self.update_learning_ui()
         else:
+            # DESACTIVAR modo aprendizaje COMPLETAMENTE
             self.cancel_learning_mode()
 
+
+
     def cancel_learning_mode(self):
-        """Cancela el modo aprendizaje"""
+        """Cancela el modo aprendizaje COMPLETAMENTE"""
         self.learning_manager.cancel_learning()
         self.learn_btn.configure(text=self.localization.t("learn_controls"), fg_color="orange")
-        self.controls_panel.refresh_all_switches()
         self.console_panel.log("Modo aprendizaje cancelado")
+        # Actualizar UI inmediatamente
+        self.controls_panel.refresh_all_switches()
+
+
+
+
 
     def save_configuration(self):
         """Guarda la configuración actual"""

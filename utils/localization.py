@@ -1,15 +1,27 @@
-import json
+import json, os, sys
 
 class Localization:
     def __init__(self):
         self.languages = {}
         self.current_language = "en"
         self.load_languages()
+
+
+
+    def resource_path(self, relative_path):
+        """ Get absolute path to resource, works for dev and for PyInstaller """
+        try:
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+
+        return os.path.join(base_path, relative_path)
     
     def load_languages(self):
         """Carga los idiomas desde el archivo JSON"""
         try:
-            with open('config/languages.json', 'r', encoding='utf-8') as f:
+            path = self.resource_path('config/languages.json')
+            with open(path, 'r', encoding='utf-8') as f:
                 self.languages = json.load(f)
         except FileNotFoundError:
             # Cargar idiomas por defecto si el archivo no existe
@@ -42,7 +54,7 @@ class Localization:
                     "language": "Idioma:"
                 },
                 "en": {
-                    "app_title": "Mvave MIDI Bridge",
+                    "app_title": "Bluetooth MIDI Bridge",
                     "input_midi": "MIDI Input:",
                     "output_midi": "MIDI Output:",
                     "connect": "Connect",

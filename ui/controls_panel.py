@@ -134,12 +134,8 @@ class ControlsPanel(ctk.CTkFrame):
 
 
 
-
-
-
-
     def refresh_switch_ui(self, control_id):
-        """Actualiza la UI de un switch específico - VERSIÓN SIMPLE"""
+        """Actualiza la UI de un switch específico - VERSIÓN CORREGIDA"""
         if control_id in self.switch_frames:
             elements = self.switch_frames[control_id]
             switch = elements['switch']
@@ -163,18 +159,23 @@ class ControlsPanel(ctk.CTkFrame):
                     # Y actualizar al texto correcto
                     switch.input_cc_var.set(not_assigned_text)
             
+            # MANTENER ESTADO DISABLED (no cambiar a "normal")
             if not is_assigned:
                 elements['button'].configure(
                     text=f"{self.localization.t('switch')} {switch.switch_number}",
-                    fg_color="gray"
+                    fg_color="gray",
+                    state="disabled"  # ← MANTENER DESHABILITADO
                 )
             else:
                 color = "green" if switch.state else "red"
                 btn_text = f"CC{input_cc_value}→CC{switch.output_cc_var.get()}: {'ON' if switch.state else 'OFF'}"
                 elements['button'].configure(
                     text=btn_text,
-                    fg_color=color
+                    fg_color=color,
+                    state="disabled"  # ← MANTENER DESHABILITADO
                 )
+
+
 
 
 
@@ -191,59 +192,39 @@ class ControlsPanel(ctk.CTkFrame):
         for control_id in self.switch_frames:
             self.refresh_switch_ui(control_id)
     
+
+
+
+
     def update_learning_ui(self, learning_manager):
-        """Actualiza la UI según el estado de aprendizaje - CORREGIDO"""
+        """Actualiza la UI según el estado de aprendizaje - VERSIÓN CORREGIDA"""
         for control_id, elements in self.switch_frames.items():
+            btn = elements['button']
+
             if learning_manager.learning_mode:
-                # MODO APRENDIZAJE ACTIVO - hacer botones PRESIONABLES
-                elements['button'].configure(state="normal")
-                
-                if (learning_manager.learning_control_id == control_id and 
-                    learning_manager.learning_control_id is not None):
-                    # Este control está siendo aprendido actualmente
+                # MODO APRENDIZAJE ACTIVO - botones clickeables
+                btn.configure(state="normal")
+
+                if (learning_manager.learning_control_id == control_id 
+                    and learning_manager.learning_control_id is not None):
+                    # Este es el botón que está siendo aprendido actualmente
                     if learning_manager.learning_cc_out:
-                        elements['button'].configure(
-                            text="¡Presiona CC salida!", 
-                            fg_color="purple"
-                        )
+                        btn.configure(text="¡Presiona CC salida!", fg_color="purple")
                     else:
-                        elements['button'].configure(
-                            text="¡Presiona control físico!", 
-                            fg_color="yellow"
-                        )
+                        btn.configure(text="¡Presiona control físico!", fg_color="yellow")
                 else:
-                    # Modo aprendizaje activo pero este control no está siendo aprendido
-                    elements['button'].configure(
-                        text="Click para aprender", 
-                        fg_color="orange"
-                    )
+                    # Estos son los otros botones (disponibles para aprender)
+                    btn.configure(text="Click para aprender", fg_color="orange")
             else:
-                # MODO APRENDIZAJE INACTIVO - estado normal
-                self.refresh_switch_ui(control_id)
-            """Actualiza la UI según el estado de aprendizaje"""
-            for control_id, elements in self.switch_frames.items():
-                if (learning_manager.learning_mode and 
-                    learning_manager.learning_control_id == control_id):
-                    elements['button'].configure(state="normal")
-                    if learning_manager.learning_cc_out:
-                        elements['button'].configure(
-                            text="¡Presiona CC salida!", 
-                            fg_color="purple"
-                        )
-                    else:
-                        elements['button'].configure(
-                            text="¡Presiona control físico!", 
-                            fg_color="yellow"
-                        )
-                elif learning_manager.learning_mode:
-                    elements['button'].configure(
-                        text="Aprender...", 
-                        fg_color="orange"
-                    )
-                else:
-                    self.refresh_switch_ui(control_id)
+                # MODO APRENDIZAJE INACTIVO - botones NO clickeables
+                btn.configure(state="disabled")  # ← ESTA LÍNEA ES CLAVE
+                self.refresh_switch_ui(control_id)  # ← Esto actualiza colores normales
 
 
+
+
+
+ 
 
     def update_all_texts_fast(self):
         """Actualiza solo los textos esenciales - MÁXIMA VELOCIDAD"""

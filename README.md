@@ -73,5 +73,5 @@ python -m main
 ```
 To build an executable 
 ```bash
-pyinstaller --noconsole --onefile --hidden-import=mido.backends.rtmidi --hidden-import=rtmidi --icon="assets/icon.ico"  main.py
+pyinstaller --noconsole --onefile --add-data "assets;assets" --add-data "config;config" --hidden-import=mido.backends.rtmidi --hidden-import=rtmidi --icon="assets/icon.ico" main.py
 ```
