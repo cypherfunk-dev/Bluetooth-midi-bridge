@@ -22,16 +22,53 @@ It allows you to map pedal switches to control tracks, effects, or any MIDI-mapp
 
 ---
 
-### 3. Run **mvave_midi.exe**
+### 3. Run **BluetoothMIDIBridge.exe**
+
 - Launch the `BluetoothMIDIBridge.exe` file (keep it running while using your DAW).
 - When started, the program will ask you to select the **input port**:
-  - If you’re using **Bluetooth**, the device will appear as `FootCtrl-bt`
-  - If you’re using **USB-C**, it will appear as `USB-Midi`
+  - If you're using **Bluetooth**, the device will appear as `FootCtrl-bt`
+  - If you're using **USB-C**, it will appear as `USB-Midi`
 - Then, select **`mvave_midi`** as the **output port**.
 
+![alt text](assets/image-3.png)
+
+### 4. Configure Controls
+
+1. **Click "Connect" button**  
+   The console will display: `"Connected to FootCtrl-bt 0 → mvave_midi 2"`
+
+2. **Click "Learn Controls"**  
+   - Wait for the interface to load
+   - Click any unassigned **"Click to learn"** button
+   - The button will change to **"Press the physical control"**
+   - Press your footswitch/button on the physical device
+   - Once mapped, the button will change color indicating successful assignment
+
+3. **Add More Switches**  
+   - Click **"+ Add New Switch"** to add additional controls
+   - You can configure up to 10 switches total
+
+4. **Customize CC Output**  
+   - Change the output CC number to your preference
+
+5. **Switch Behavior**  
+   Configure each switch as:
+   - **Toggle**: Maintains state (on/off)
+   - **Momentary**: Only active while pressed
+
+### 5. Preset Management
+
+- **Save Presets**: Save your configurations for different projects
+- **Load Presets**: Load previously saved configurations
+- **Default Preset**: The program automatically loads `config.json` from the same folder as the executable on startup
+
+### 6. Additional Features
+
+- **Language**: Switch between English and Spanish in the interface
+- **Event Console**: Monitor detailed MIDI events and system messages in real-time using the built-in console
 ---
 
-### 4. Configure your DAW (example: Ableton Live)
+### 7. Configure your DAW (example: Ableton Live)
 1. Open **Ableton Live**  
 2. Go to **Options → Preferences → Link, Tempo & MIDI**
 3. Under **MIDI Ports**, find **`mvave_midi`**
